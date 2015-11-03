@@ -96,7 +96,7 @@ class LogView {
 					continue;
 				}
 				$key = $key - 2;
-				$debug .= "<li> $key " . LogItem::cleanFilePath($row['file']) . " Line : " . $row["line"] .  "</li>";
+				$debug .= "<li> $key " . \model\LogItem::cleanFilePath($row['file']) . " Line : " . $row["line"] .  "</li>";
 			}
 			$debug .= "</ul>";
 		} else {
