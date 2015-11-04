@@ -8,7 +8,7 @@ class LogItem {
 	* @var String
 	*/
 	public $m_message;
-	
+
 	/**
 	* @var mixed or null
 	*/

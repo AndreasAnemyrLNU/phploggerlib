@@ -7,26 +7,25 @@ session_start();
  * Time: 21:55
  */
 
-
-echo session_id();
-
-
 //Example code
 require_once("Logger.php");
+require_once("model/LogItemDAL.php");
 require_once("view/html/HTMLPage.php");
+require_once("view/html/LogInterfaceView.php");
+require_once("controller/LogManager.php");
 
 
+$logManagerController = new \controller\LogManager();
 $HTMLPage = new view\HTMLPage();
 
-loggHeader("write a message");
-loggThis("write a message");
-loggThis("include call trace", true);
-loggThis("include an object", false, new \Exception("foo exception"));
+//loggHeader("write a message");
+//loggThis("write a message");
+//loggThis("include call trace", true);
+//loggThis("include an object", false, new \Exception("foo exception"));
 
-echoLog();
+//echoLog();
 
-
-echo $HTMLPage->getHTMLPage();
+echo $HTMLPage->getHTMLPage($logManagerController->doLogManager()->getHTML());
 
 
 

@@ -15,7 +15,7 @@ $logCollection = new model\LogCollection();
 */
 function loggThis($logMessageString, $logThisObject = null, $includeTrace = false) {
 	global $logCollection;
-	$logCollection->log($logMessageString, $includeTrace, $logThisObject);
+	$logCollection->addLogItem($logMessageString, $includeTrace, $logThisObject);
 }
 
 /**
@@ -26,7 +26,7 @@ function loggThis($logMessageString, $logThisObject = null, $includeTrace = fals
 */
 function loggHeader($logMessageString) {
 	global $logCollection;
-	$logCollection->log("<h2>$logMessageString</h2>", null, false);
+	$logCollection->addLogItem("<h2>$logMessageString</h2>", null, false);
 }
 
 /**

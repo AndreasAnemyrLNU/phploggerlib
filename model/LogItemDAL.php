@@ -43,7 +43,20 @@ class LogItemDAL
     {
         $this->logCollection = new \model\LogCollection();
 
+        $stmt = $this->database->prepare("SELECT * FROM " . self::$table);
+        if($stmt === FALSE)
+        {
+            throw new \Exception($this->database->error);
+        }
 
+        $stmt->execute();
+
+        $stmt->bind_result($message, $object, $debugBacktrace, $calledFrom, $microTime);
+
+        while($stmt->fetch())
+        {
+            $this->logCollection->addLogItem($message, false, false);
+        }
 
         return $this->logCollection;
     }

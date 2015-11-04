@@ -17,8 +17,7 @@ class LogView {
 	* @return string HTML 
 	*/
 	public function getDebugData($doDumpSuperGlobals = false) {
-		
-		
+
 		if ($doDumpSuperGlobals) {
 			$superGlobals = $this->dumpSuperGlobals();
 		} else {
