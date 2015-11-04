@@ -1,11 +1,9 @@
 <?php
-//This has no namespace for convenience, it should really be a common module
+
 require_once("model/LogCollection.php");
 require_once("view/html/LogView.php");
 
 
-//uses globals for convenience
-//to let us avoid create and use an object...
 $logCollection = new model\LogCollection();
 
 /**

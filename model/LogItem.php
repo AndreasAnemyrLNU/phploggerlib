@@ -17,7 +17,7 @@ class LogItem {
 	/**
 	* @var array From debug_backtrace or null
 	*/
-	public $m_debug_backtrace;
+	public $m_debugBacktrace;
 
 
 	/**
@@ -47,15 +47,15 @@ class LogItem {
 		if ($logThisObject != null)
 			$this->m_object = var_export($logThisObject, true);
 		
-		$this->m_debug_backtrace = debug_backtrace();
+		$this->m_debugBacktrace = debug_backtrace();
 
 		$this->m_microTime = microtime();
 
-		$this->m_calledFrom = $this->cleanFilePath($this->m_debug_backtrace[2]["file"]) . " " . $this->m_debug_backtrace[2]["line"];
+		$this->m_calledFrom = $this->cleanFilePath($this->m_debugBacktrace[2]["file"]) . " " . $this->m_debugBacktrace[2]["line"];
 
 
 		if (!$includeTrace) {
-			$this->m_debug_backtrace = null;
+			$this->m_debugBacktrace = null;
 		}
 		
 	}

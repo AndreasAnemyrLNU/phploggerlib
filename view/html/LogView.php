@@ -85,10 +85,10 @@ class LogView {
 	*/
 	private function showDebugItem(\model\LogItem $item) {
 
-		if ($item->m_debug_backtrace != null) {
+		if ($item->m_debugBacktrace != null) {
 			$debug = "<h4>Trace:</h4>
 					 <ul>";
-			foreach ($item->m_debug_backtrace AS $key => $row) {
+			foreach ($item->m_debugBacktrace AS $key => $row) {
 
 				//the two topmost items are part of the logger
 				//skip those

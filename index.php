@@ -1,4 +1,5 @@
 <?php
+session_start();
 /**
  * Created by PhpStorm.
  * User: AndreasAnemyr
@@ -7,7 +8,7 @@
  */
 
 
-
+echo session_id();
 
 
 //Example code
@@ -17,12 +18,12 @@ require_once("view/html/HTMLPage.php");
 
 $HTMLPage = new view\HTMLPage();
 
-//loggHeader("write a message");
-//loggThis("write a message");
-//loggThis("include call trace", true);
-//loggThis("include an object", false, new \Exception("foo exception"));
+loggHeader("write a message");
+loggThis("write a message");
+loggThis("include call trace", true);
+loggThis("include an object", false, new \Exception("foo exception"));
 
-//echoLog();
+echoLog();
 
 
 echo $HTMLPage->getHTMLPage();

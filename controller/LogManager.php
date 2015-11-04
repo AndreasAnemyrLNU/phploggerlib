@@ -9,4 +9,11 @@
 class LogManager
 {
 
+    /**
+     * LogManager constructor.
+     */
+    public function __construct()
+    {
+
+    }
 }
