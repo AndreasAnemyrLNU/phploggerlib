@@ -38,16 +38,58 @@ class LogItemDAL
         $this->database = $db;
     }
 
-
-    public function getLogItemAll()
+    public function CreateLogItem(\model\LogItem $logItem)
     {
-        $this->logCollection = new \model\LogCollection();
+        //$logItem->m_object = serialize($logItem->m_object);
+        //$logItem->m_debugBacktrace = serialize($logItem->m_debugBacktrace);
 
-        $stmt = $this->database->prepare("SELECT * FROM " . self::$table);
+
+        var_dump($logItem);
+
+        $stmt = $this->database->prepare
+        (
+
+            "INSERT INTO `LogItem`
+            (
+                `message`, `object`, `debugBacktrace`, `calledFrom`, `microTime`
+            )
+            VALUES (?, ?, ?, ?, ?)"
+        );
+        $this->TestSTMT($stmt);
+
+            $message        = $logItem->m_message;
+            $object         = serialize($logItem->m_object);
+            $debugBacktrace = serialize($logItem->m_debugBacktrace);
+            $calledFrom     = $logItem->m_calledFrom;
+            $microTime      = $logItem->m_microTime;
+
+        $stmt->bind_param
+        (
+            'ssssd',
+            $message,
+            $object,
+            $debugBacktrace,
+            $calledFrom,
+            $microTime
+        );
+
+        $stmt->execute();
+    }
+
+    public function TestSTMT($stmt)
+    {
         if($stmt === FALSE)
         {
             throw new \Exception($this->database->error);
         }
+    }
+
+    public function ReadLogItemAll()
+    {
+        $this->logCollection = new \model\LogCollection();
+
+        $stmt = $this->database->prepare("SELECT * FROM " . self::$table);
+        $this->TestSTMT($stmt);
 
         $stmt->execute();
 
@@ -60,4 +102,5 @@ class LogItemDAL
 
         return $this->logCollection;
     }
+
 }

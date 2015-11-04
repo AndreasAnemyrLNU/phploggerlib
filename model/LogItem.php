@@ -51,7 +51,7 @@ class LogItem {
 
 		$this->m_microTime = microtime();
 
-		$this->m_calledFrom = $this->cleanFilePath($this->m_debugBacktrace[2]["file"]) . " " . $this->m_debugBacktrace[2]["line"];
+		$this->m_calledFrom = $this->cleanFilePath($this->m_debugBacktrace[0]["file"]) . " " . $this->m_debugBacktrace[0]["line"];
 
 
 		if (!$includeTrace) {

@@ -13,7 +13,7 @@ require_once("model/LogItemDAL.php");
 require_once("view/html/HTMLPage.php");
 require_once("view/html/LogInterfaceView.php");
 require_once("controller/LogManager.php");
-
+require_once("view/html/Navigation.php");
 
 $logManagerController = new \controller\LogManager();
 $HTMLPage = new view\HTMLPage();

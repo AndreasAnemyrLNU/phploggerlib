@@ -11,23 +11,33 @@ namespace view;
 
 class LogInterfaceView
 {
+
+    private static $types =
+                        [
+                            'primary',
+                            'default',
+                            'success',
+                            'info',
+                            'warning',
+                            'danger'
+                        ];
+    private $nav;
+
+    public function __construct(\view\Navigation $nav)
+    {
+        $this->nav = $nav;
+    }
+
     public function getHTML()
     {
-        return
-        "
-            <a href='?trigger=\"defaultLog\"'>
-               <button type=\"button\" class=\"btn btn-default\">Default</button>
-            </a>
+        $ret = "";
 
-            <button type=\"button\" class=\"btn btn-primary\">Primary</button>
+            foreach(self::$types as $type)
+            {
+                $ret .= $this->nav->RenderTriggerButton($type);
+            }
 
-            <button type=\"button\" class=\"btn btn-success\">Success</button>
-
-            <button type=\"button\" class=\"btn btn-info\">Info</button>
-
-            <button type=\"button\" class=\"btn btn-warning\">Warning</button>
-
-            <button type=\"button\" class=\"btn btn-danger\">Danger</button>
-        ";
+        return $ret;
     }
+
 }
