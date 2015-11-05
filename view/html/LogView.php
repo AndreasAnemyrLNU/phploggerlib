@@ -16,7 +16,7 @@ class LogView {
 	* @param boolean $doDumpSuperGlobals
 	* @return string HTML 
 	*/
-	public function getDebugData($doDumpSuperGlobals = false) {
+	public function getHTML($doDumpSuperGlobals = false) {
 
 		if ($doDumpSuperGlobals) {
 			$superGlobals = $this->dumpSuperGlobals();
@@ -84,6 +84,7 @@ class LogView {
 	*/
 	private function showDebugItem(\model\LogItem $item) {
 
+
 		if ($item->m_debugBacktrace != null) {
 			$debug = "<h4>Trace:</h4>
 					 <ul>";
@@ -106,12 +107,13 @@ class LogView {
 			$object = print_r($item->m_object, true);
 		else
 			$object = "";
-		list($usec, $sec) = explode(" ", microtime());
 
-		$date = date("Y-m-d H:i:s", $sec);
+		//list($usec, $sec) = explode(".", $item->m_microTime);
+
+		$date = date("Y-m-d H:i:s", $item->m_microTime);
 		$ret =  "<li>
 					<Strong>$item->m_message </strong> $item->m_calledFrom
-					<div style='font-size:small'>$date $usec</div>
+					<div style='font-size:small'>$date</div>
 					<pre>$object</pre>
 
 					$debug

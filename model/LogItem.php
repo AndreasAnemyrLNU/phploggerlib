@@ -40,23 +40,45 @@ class LogItem {
 	* @param boolean $includeTrace save callstack
 	* @return void
 	*/
-	public function __construct($logMessageString, $includeTrace = false, $logThisObject = null) {
+	public function __construct	(
+									$logMessageString,
+									$includeTrace = false,
+									$logThisObject = null,
+									$microTime = null,
+									$debug_backtrace = null
+								)
+	{
 
 		$this->m_message = $logMessageString;
 
 		if ($logThisObject != null)
 			$this->m_object = var_export($logThisObject, true);
-		
-		$this->m_debugBacktrace = debug_backtrace();
 
-		$this->m_microTime = microtime();
+		if($debug_backtrace === null)
+		{
+			$this->m_debugBacktrace = debug_backtrace();
+		}
+		else
+		{
+			$this->m_debugBacktrace = $debug_backtrace;
+		}
+
+
+		if($microTime === null)
+		{
+			$this->m_microTime = microtime();
+		}
+		else
+		{
+			$this->m_microTime = $microTime;
+		}
 
 		$this->m_calledFrom = $this->cleanFilePath($this->m_debugBacktrace[0]["file"]) . " " . $this->m_debugBacktrace[0]["line"];
 
 
-		if (!$includeTrace) {
-			$this->m_debugBacktrace = null;
-		}
+		//if (!$includeTrace) {
+		//	$this->m_debugBacktrace = null;
+		//}
 		
 	}
 	

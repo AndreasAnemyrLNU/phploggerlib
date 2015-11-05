@@ -30,8 +30,8 @@ class LogInterfaceView
 
     public function getHTML()
     {
-        $ret = "";
 
+            $ret = "";
             foreach(self::$types as $type)
             {
                 $ret .= $this->nav->RenderTriggerButton($type);

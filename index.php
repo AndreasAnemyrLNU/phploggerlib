@@ -15,8 +15,9 @@ require_once("view/html/LogInterfaceView.php");
 require_once("controller/LogManager.php");
 require_once("view/html/Navigation.php");
 
-$logManagerController = new \controller\LogManager();
-$HTMLPage = new view\HTMLPage();
+$navigation = new \view\Navigation();
+$logManagerController = new \controller\LogManager($navigation);
+$HTMLPage = new view\HTMLPage($navigation);
 
 //loggHeader("write a message");
 //loggThis("write a message");

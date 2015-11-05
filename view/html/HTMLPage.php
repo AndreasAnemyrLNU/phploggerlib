@@ -11,6 +11,16 @@ namespace view;
 class HTMLPage
 {
 
+    private $nav;
+
+    /**
+     * HTMLPage constructor.
+     */
+    public function __construct(\view\Navigation $nav)
+    {
+        $this->nav = $nav;
+    }
+
     public function getHTMLPage($main)
     {
         return
@@ -37,7 +47,9 @@ class HTMLPage
                     <!-- Collect the nav links, forms, and other content for toggling -->
                     <div class=\"collapse navbar-collapse\" id=\"bs-example-navbar-collapse-1\">
                       <ul class=\"nav navbar-nav\">
-                        <li><a href=\"?action=test\">Interface</a></li>
+                        <li>{$this->nav->RenderActionButtonListAllLogsByIp()}</li>
+                        <li>{$this->nav->RenderActionButtonListAllLogsBySession()}</li>
+                        <li>{$this->nav->RenderActionButtonGoToTestInterfce()}</li>
                       </ul>
                     </div><!-- /.navbar-collapse -->
                   </div><!-- /.container-fluid -->

@@ -16,8 +16,17 @@ class LogCollection {
 	* @param string $class a userdefined class can be bound to css
 	* @return void
 	*/
-	public function addLogItem($string, $trace = false, $object = null, $class = "normal") {
-		$this->logArray[] = new LogItem($string, $trace, $object);
+	public function addLogItem
+								(
+									$string,
+									$trace = false,
+									$object = null,
+									$class = "normal",
+									$microtime,
+									$debugBactrace
+								)
+	{
+		$this->logArray[] = new LogItem($string, $trace, $object, $microtime, $debugBactrace);
 	}
 	
 	/**

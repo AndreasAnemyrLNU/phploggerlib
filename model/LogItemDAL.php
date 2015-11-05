@@ -24,7 +24,7 @@ namespace model;
 
 class LogItemDAL
 {
-    private static $table = "LogItem";
+    private static $table = "`LogItem`";
 
     private $database;
 
@@ -40,16 +40,11 @@ class LogItemDAL
 
     public function CreateLogItem(\model\LogItem $logItem)
     {
-        //$logItem->m_object = serialize($logItem->m_object);
-        //$logItem->m_debugBacktrace = serialize($logItem->m_debugBacktrace);
-
-
-        var_dump($logItem);
 
         $stmt = $this->database->prepare
         (
 
-            "INSERT INTO `LogItem`
+            "INSERT INTO". self::$table ."
             (
                 `message`, `object`, `debugBacktrace`, `calledFrom`, `microTime`
             )
@@ -65,7 +60,7 @@ class LogItemDAL
 
         $stmt->bind_param
         (
-            'ssssd',
+            'sssss',
             $message,
             $object,
             $debugBacktrace,
@@ -88,7 +83,7 @@ class LogItemDAL
     {
         $this->logCollection = new \model\LogCollection();
 
-        $stmt = $this->database->prepare("SELECT * FROM " . self::$table);
+        $stmt = $this->database->prepare("SELECT `message`, `object`, `debugBacktrace`, `calledFrom`, `microTime` FROM " . self::$table);
         $this->TestSTMT($stmt);
 
         $stmt->execute();
@@ -97,10 +92,18 @@ class LogItemDAL
 
         while($stmt->fetch())
         {
-            $this->logCollection->addLogItem($message, false, false);
+            $object = unserialize($object);
+            $debugBacktrace = unserialize($debugBacktrace);
+            $this->logCollection->addLogItem(
+                                                $message,
+                                                false,
+                                                $object,
+                                                $message,
+                                                $microTime,
+                                                $debugBacktrace
+                                            );
         }
-
         return $this->logCollection;
     }
-
 }
+
