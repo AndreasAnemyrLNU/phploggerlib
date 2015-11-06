@@ -8,13 +8,16 @@ class LogView {
 
 	private $log;
 
-	public function __construct(\model\LogCollection $log) {
+	private $nav;
+
+	public function __construct(\model\LogCollection $log, \view\Navigation $nav, $details = false) {
 		$this->log = $log;
+		$this->nav = $nav;
 	}
 
 	/**
 	* @param boolean $doDumpSuperGlobals
-	* @return string HTML 
+	* @return string HTML
 	*/
 	public function getHTML($doDumpSuperGlobals = false) {
 
@@ -23,28 +26,19 @@ class LogView {
 		} else {
 			$superGlobals = "";
 		}
-		
+
 		$debugItems = "";
 		foreach ($this->log->getList() as $item) {
 			$debugItems .= $this->showDebugItem($item);
 		}
-		$dumps = "
+		return "
 			<div>
-				<hr/>
 				<h2>Debug</h2>
-				<table>
-					<tr>
-						<td>$superGlobals</td>
-				   		<td>
-				   			<h3>Debug Items</h3>
-				   			<ol>
-				   				$debugItems
-				   			</ol>
-					 	</td>
-					</tr>
-			    </table>
+				<h3>Debug Items</h3>
+				<div class=\"panel panel-group\">
+					$debugItems
+				</div>
 		    </div>";
-		return $dumps;
 	}
 
 	/**
@@ -86,16 +80,10 @@ class LogView {
 
 
 		if ($item->m_debugBacktrace != null) {
-			$debug = "<h4>Trace:</h4>
-					 <ul>";
+			$debug = "<h4>Trace:</h4>";
+			$debug .= "<ul>";
 			foreach ($item->m_debugBacktrace AS $key => $row) {
 
-				//the two topmost items are part of the logger
-				//skip those
-				if ($key < 2) {
-					continue;
-				}
-				$key = $key - 2;
 				$debug .= "<li> $key " . \model\LogItem::cleanFilePath($row['file']) . " Line : " . $row["line"] .  "</li>";
 			}
 			$debug .= "</ul>";
@@ -103,23 +91,29 @@ class LogView {
 			$debug = "";
 		}
 
+
 		if ($item->m_object != null)
-			$object = print_r($item->m_object, true);
+			$object = $item->m_object;
 		else
 			$object = "";
 
-		//list($usec, $sec) = explode(".", $item->m_microTime);
-
 		$date = date("Y-m-d H:i:s", $item->m_microTime);
-		$ret =  "<li>
-					<Strong>$item->m_message </strong> $item->m_calledFrom
-					<div style='font-size:small'>$date</div>
-					<pre>$object</pre>
 
-					$debug
 
-				</li>";
+		$detailsBtn = $this->nav->RenderGenericDoButtonWithAction
+		(
+			'Details', 'logmanager', 'zoom', 'primary', '&logitem=' . $item->m_microTime
+		);
 
-		return $ret;
+		return	"<div class='panel panel-default'>
+					<div class='panel-body bg-$item->m_message'>
+						$item->m_message
+						$item->m_calledFrom
+						$date
+						$debug
+						$detailsBtn
+					</div>
+				</div>";
 	}
 }
+

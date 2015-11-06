@@ -12,15 +12,6 @@ namespace view;
 class LogInterfaceView
 {
 
-    private static $types =
-                        [
-                            'primary',
-                            'default',
-                            'success',
-                            'info',
-                            'warning',
-                            'danger'
-                        ];
     private $nav;
 
     public function __construct(\view\Navigation $nav)
@@ -32,9 +23,12 @@ class LogInterfaceView
     {
 
             $ret = "";
-            foreach(self::$types as $type)
+            foreach($this->nav->getTypes() as $type)
             {
-                $ret .= $this->nav->RenderTriggerButton($type);
+                $ret .= $this->nav->RenderGenericDoButtonWithAction
+                (
+                    $type, 'logmanager', $type , $type
+                );
             }
 
         return $ret;

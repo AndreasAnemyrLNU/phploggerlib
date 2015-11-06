@@ -11,100 +11,141 @@ namespace view;
 
 class Navigation
 {
-    private static $action = "action";
 
-    private static $triggerURL = "trigger";
 
-    private static $logsByIp = "logsbyip";
 
-    private static $logsBySession = "logsbysession";
 
-    private static $testInterface = "testinterface";
+    // Really important. Do Not change!
+    private static $staticDo = 'do';
+    private static $staticAction = 'action';
+    // Really important. Do Not change!
+    private static $types =
+    [
+            'primary',
+            'default',
+            'success',
+            'info',
+            'warning',
+            'danger'
+    ];
+    private $do;
+    private $action;
 
-    public function GetNameOfTrigger()
+    /**
+     * Navigation constructor.
+     * @param $do
+     * @param $action
+     */
+    public function __construct()
     {
-        if
-        (
-            $this->SystemsModeWasSetToLogStuff()
-        )
-        {
-            return $_GET[self::$triggerURL];
-        }
-        else
-        {
-            throw new Exception('Not valid get param in url!');
-        }
+        if(isset($_GET[self::$staticDo]))
+            $this->do = $_GET[self::$staticDo];
+
+        if(isset($_GET[self::$staticAction]))
+            $this->action = $_GET[self::$staticAction];
     }
 
-    public function SystemsModeWasSetToLogStuff()
+    public function DoShowWelcome()
     {
-        if
-            (
-                isset($_GET[self::$triggerURL])
-            )
-
+        if(!isset($_GET[self::$staticDo]))
             return true;
     }
 
-    public function ClientWantsToListAllLogsByIp()
+    public function DoShowInterface()
     {
-        //TODO not true default!
-        return true;
+        if($this->action === 'interface')
+            return true;
+    }
+
+    public function DoLogDefaultException()
+    {
+        if($this->action === 'default')
+            return true;
+    }
+
+    public function RenderGenericDoButtonWithAction($btnText, $do = false, $action = false, $type = 'primary', $params = false)
+    {
+        if($do)
+            $this->setDo($do);
+
+        if($action)
+            $this->setAction($action);
+
+        $url = "";
+        if($this->do != '')
+            $url   .= self::$staticDo . '=' . $do;
+        if($this->action != '')
+            $url   .= '&' . self::$staticAction . '=' . $action;
+        if($params != false)
+            $url = $url . $params;
+
+        return
+        "
+        <a href='?$url'>
+            <button type=\"button\" class=\"btn btn-$type\">$btnText</button>
+        </a>
+        "
+        ;
+    }
+
+    public function setDo($do)
+    {
+        $this->do = $do;
+    }
+
+    public function setAction($action)
+    {
+        $this->action = $action;
     }
 
     /**
-     * @param string $type default, primary, success, info, warning, danger
-     * @return html (button)
+     * @return bool
+     * If action is set with an value from the array $types an exception is thrown...
      */
-    public function RenderTriggerButton($type)
+    public function SystemShouldThrowAnException()
     {
-        $triggerURL = self::$triggerURL;
+        foreach($this->getTypes() as $type)
+        {
+            if($type === $this->action)
+            {
+                $exceptionToBeThrown = '\\' . $type . 'Log' . 'Exception';
 
-        return
-        "
-        <a href='?$triggerURL=\"$type\"'>
-            <button type=\"button\" class=\"btn btn-$type\">$type</button>
-        </a>
-        "
-        ;
+                throw new $exceptionToBeThrown($type);
+            }
+        }
+        return false;
     }
 
-    public function RenderActionButtonListAllLogsByIp()
+    public function getTypes()
     {
-        $action = self::$logsByIp;
-
-        return
-        "
-        <a href='?action=\"$action\"'>
-            <button type=\"button\" class=\"btn btn-primary\">Logs By Ip</button>
-        </a>
-        "
-        ;
+        return self::$types;
     }
 
-    public function RenderActionButtonListAllLogsBySession()
+    public function GetLogItem(\model\LogCollection $logCollection)
     {
-        $action = self::$logsBySession;
-
-        return
-            "
-        <a href='?action=\"$action\"'>
-            <button type=\"button\" class=\"btn btn-primary\">Logs By Session</button>
-        </a>
-        "
-        ;
+        foreach($logCollection->getList() as $logItem)
+        {
+            if($_GET['logitem'] == $logItem->m_microTime)
+                return $logItem;
+        }
+        return null;
     }
 
-    public function RenderActionButtonGoToTestInterfce()
+    public function DoShowDetailsOfLogItem()
     {
-        $action = self::$testInterface;
-
-        return
-            "
-        <a href='?action=\"$action\"'>
-            <button type=\"button\" class=\"btn btn-primary\">*Test Interface</button>
-        </a>
-        "
-        ;
+        if($this->action == 'zoom')
+            return true;
+        return false;
     }
+
+    private function getDo()
+    {
+        return $this->do;
+    }
+
+    private function  getAction()
+    {
+        return $this->do;
+    }
+
 }

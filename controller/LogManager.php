@@ -16,6 +16,8 @@ class LogManager
 
     private $nav;
 
+    private $view;
+
     //TODO Cached logcollection...
     private $logCollection;
 
@@ -52,47 +54,53 @@ class LogManager
     public function doLogManager()
     {
 
-        return new \view\LogInterfaceView(new \view\Navigation());
 
 
-                                                                //UC0
-                                                                //* System presents a simple interface for logging
 
-        if  (
-                $this->nav->SystemsModeWasSetToLogStuff()
-            )
+        if($this->nav->DoShowWelcome())
         {
-                                                                //* Programmer uses a method in the interface to log a message
-                                                                //* System stores the message in a log item each time the method is called
-                $this->logItemDal->CreateLogItem
-                (
-                    new \model\LogItem
-                    (
-                        $this->nav->GetNameOfTrigger(),
-                        true,
-                        new \Exception("Ohhhho just a test!"),
-                        microtime(true),
-                        debug_backtrace()
-                    )
-                );
+
+            $this->view = new \view\LogWelcomeView(new \view\Navigation());
         }
-                                                                //UC1
-                                                                //* Administrator wants to se all logs by ip-adress
-        if
-            (
-                $this->nav->ClientWantsToListAllLogsByIp()
-            )
+
+        if($this->nav->DoShowInterface())
         {
-            return $logView = new \view\LogView($this->logCollection);
+            $this->view = new \view\LogInterfaceView(new \view\Navigation());
+        }
+
+        if($this->nav->DoShowDetailsOfLogItem())
+        {
+            $logItem = $this->nav->GetLogItem($this->logCollection);
+            $logCollection = new \model\LogCollection();
+            $logCollection->addExistingLogItem($logItem);
+            $this->view =  new \view\LogView($logCollection, $this->nav);
         }
 
 
+        try
+        {
+            if($this->nav->SystemShouldThrowAnException());
+        }
+        catch (\Exception $e)
+        {
 
 
+            $this->logItemDal->CreateLogItem
+                                                (
+                                                    new \model\LogItem
+                                                    (
+                                                        $e->getMessage(),
+                                                        true,
+                                                        $e,
+                                                        microtime(true),
+                                                        $e->getTrace()
+                                                    )
+                                                );
 
-
-
-
+            $this->logCollection = $this->logItemDal->ReadLogItemAll();
+            return $logView = new \view\LogView($this->logCollection, $this->nav);
+        }
+        return $this->view;
     }
 
 

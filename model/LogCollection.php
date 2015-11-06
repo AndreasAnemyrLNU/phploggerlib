@@ -28,7 +28,12 @@ class LogCollection {
 	{
 		$this->logArray[] = new LogItem($string, $trace, $object, $microtime, $debugBactrace);
 	}
-	
+
+	public function addExistingLogItem(LogItem $logItem)
+	{
+		$this->logArray[] = $logItem;
+	}
+
 	/**
 	* @return array of logger/LogItem
 	*/
