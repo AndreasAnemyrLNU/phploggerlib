@@ -33,6 +33,10 @@ class LogItem {
 
 	public $m_superGlobals;
 
+	public $m_ip;
+
+	public $m_sess;
+
 	public function __construct	(
 									$logMessageString,
 									$includeTrace = false,
@@ -78,7 +82,9 @@ class LogItem {
 			$this->m_superGlobals = $superGlobals;
 		}
 
-		
+		//TODO Check if these are ok to be in a class of type model. Don´t know for now....
+		$this->m_ip = $_SERVER['REMOTE_ADDR'];
+		$this->m_sess = session_id();
 	}
 	
 	/**

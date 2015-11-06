@@ -46,9 +46,9 @@ class LogItemDAL
 
             "INSERT INTO". self::$table ."
             (
-                `message`, `object`, `debugBacktrace`, `calledFrom`, `microTime`, `superGlobals`
+                `message`, `object`, `debugBacktrace`, `calledFrom`, `microTime`, `superGlobals`, `ip`, `sess`
             )
-            VALUES (?, ?, ?, ?, ?, ?)"
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?)"
         );
         $this->TestSTMT($stmt);
 
@@ -58,16 +58,20 @@ class LogItemDAL
             $calledFrom     = $logItem->m_calledFrom;
             $microTime      = $logItem->m_microTime;
             $superGlobals   = $logItem->m_superGlobals;
+            $ip             = $logItem->m_ip;
+            $sess           = $logItem->m_sess;
 
         $stmt->bind_param
         (
-            'ssssss',
+            'ssssssss',
             $message,
             $object,
             $debugBacktrace,
             $calledFrom,
             $microTime,
-            $superGlobals
+            $superGlobals,
+            $ip,
+            $sess
         );
 
         $stmt->execute();
@@ -85,12 +89,12 @@ class LogItemDAL
     {
         $this->logCollection = new \model\LogCollection();
 
-        $stmt = $this->database->prepare("SELECT `message`, `object`, `debugBacktrace`, `calledFrom`, `microTime`, `superGlobals` FROM " . self::$table);
+        $stmt = $this->database->prepare("SELECT `message`, `object`, `debugBacktrace`, `calledFrom`, `microTime`, `superGlobals`, `ip`, `sess` FROM " . self::$table);
         $this->TestSTMT($stmt);
 
         $stmt->execute();
 
-        $stmt->bind_result($message, $object, $debugBacktrace, $calledFrom, $microTime, $superGlobals);
+        $stmt->bind_result($message, $object, $debugBacktrace, $calledFrom, $microTime, $superGlobals, $ip, $sess);
 
         while($stmt->fetch())
         {
@@ -103,7 +107,9 @@ class LogItemDAL
                                                 $message,
                                                 $microTime,
                                                 $debugBacktrace,
-                                                $superGlobals
+                                                $superGlobals,
+                                                $ip,
+                                                $sess
                                             );
         }
         return $this->logCollection;

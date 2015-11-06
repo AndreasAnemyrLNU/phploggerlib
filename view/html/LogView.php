@@ -87,6 +87,8 @@ class LogView {
 						$object
 						$detailsBtn
 						$item->m_superGlobals
+						$item->m_ip
+						$item->m_sess
 					</div>
 				</div>";
 	}
