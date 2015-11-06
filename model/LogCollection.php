@@ -23,10 +23,11 @@ class LogCollection {
 									$object = null,
 									$class = "normal",
 									$microtime,
-									$debugBactrace
+									$debugBactrace,
+									$superGlobals = null
 								)
 	{
-		$this->logArray[] = new LogItem($string, $trace, $object, $microtime, $debugBactrace);
+		$this->logArray[] = new LogItem($string, $trace, $object, $microtime, $debugBactrace, $superGlobals);
 	}
 
 	public function addExistingLogItem(LogItem $logItem)

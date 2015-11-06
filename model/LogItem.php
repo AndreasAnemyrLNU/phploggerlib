@@ -30,22 +30,16 @@ class LogItem {
 	* see http://se1.php.net/manual/en/function.microtime.php
 	*/
 	public $m_microTime;
-	
-	
-	/**
-	* Create a log item
-	*
-	* @param string $logMessageString The message you intend to log
-	* @param mixed $logThisObject An object which state you want to log 
-	* @param boolean $includeTrace save callstack
-	* @return void
-	*/
+
+	public $m_superGlobals;
+
 	public function __construct	(
 									$logMessageString,
 									$includeTrace = false,
 									$logThisObject = null,
 									$microTime = null,
-									$debug_backtrace = null
+									$debug_backtrace = null,
+									$superGlobals = null
 								)
 	{
 
@@ -75,10 +69,15 @@ class LogItem {
 
 		$this->m_calledFrom = $this->cleanFilePath($this->m_debugBacktrace[0]["file"]) . " " . $this->m_debugBacktrace[0]["line"];
 
+		if($superGlobals === null)
+		{
+			$this->m_superGlobals = '';
+		}
+		else
+		{
+			$this->m_superGlobals = $superGlobals;
+		}
 
-		//if (!$includeTrace) {
-		//	$this->m_debugBacktrace = null;
-		//}
 		
 	}
 	

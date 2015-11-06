@@ -32,6 +32,8 @@ class HTMLPage
                 <link rel=\"stylesheet\" href=\"https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css\">
             </head>
             <body>
+                <div class=\"col-xs-10 col-sm-10 col-md-10 col-lg-10
+                             col-xs-push-1 col-sm-push-1 col-md-push-1 col-lg-push-1\">
                 <nav class=\"navbar navbar-default\">
                   <div class=\"container-fluid\">
                     <!-- Brand and toggle get grouped for better mobile display -->
@@ -48,6 +50,7 @@ class HTMLPage
                     <div class=\"collapse navbar-collapse\" id=\"bs-example-navbar-collapse-1\">
                       <ul class=\"nav navbar-nav\">
                         <li>{$this->nav->RenderGenericDoButtonWithAction('Interface', 'logmanager', 'interface', 'primary')}</li>
+                        <li>{$this->nav->RenderGenericDoButtonWithAction('Analyze', 'logmanager', 'analyze', 'primary')}</li>
                       </ul>
                     </div><!-- /.navbar-collapse -->
                   </div><!-- /.container-fluid -->
@@ -55,6 +58,7 @@ class HTMLPage
                 <main class=\"container-fluid well\">
                     $main
                 </main>
+            </div>
             </body>
         </html>
         ";

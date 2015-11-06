@@ -55,8 +55,6 @@ class LogManager
     {
 
 
-
-
         if($this->nav->DoShowWelcome())
         {
 
@@ -73,7 +71,7 @@ class LogManager
             $logItem = $this->nav->GetLogItem($this->logCollection);
             $logCollection = new \model\LogCollection();
             $logCollection->addExistingLogItem($logItem);
-            $this->view =  new \view\LogView($logCollection, $this->nav);
+            $this->view =  new \view\LogView($logCollection, $this->nav, true);
         }
 
 
@@ -83,8 +81,6 @@ class LogManager
         }
         catch (\Exception $e)
         {
-
-
             $this->logItemDal->CreateLogItem
                                                 (
                                                     new \model\LogItem
@@ -93,7 +89,8 @@ class LogManager
                                                         true,
                                                         $e,
                                                         microtime(true),
-                                                        $e->getTrace()
+                                                        $e->getTrace(),
+                                                        $this->GetStateOfRequest()
                                                     )
                                                 );
 
@@ -101,6 +98,15 @@ class LogManager
             return $logView = new \view\LogView($this->logCollection, $this->nav);
         }
         return $this->view;
+    }
+
+    /**
+     * @return string
+     */
+    private function GetStateOfRequest()
+    {
+        $logView = new \view\LogView($this->logCollection, $this->nav);
+        return $logView->dumpSuperGlobals();
     }
 
 

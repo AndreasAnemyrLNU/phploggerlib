@@ -46,9 +46,9 @@ class LogItemDAL
 
             "INSERT INTO". self::$table ."
             (
-                `message`, `object`, `debugBacktrace`, `calledFrom`, `microTime`
+                `message`, `object`, `debugBacktrace`, `calledFrom`, `microTime`, `superGlobals`
             )
-            VALUES (?, ?, ?, ?, ?)"
+            VALUES (?, ?, ?, ?, ?, ?)"
         );
         $this->TestSTMT($stmt);
 
@@ -57,15 +57,17 @@ class LogItemDAL
             $debugBacktrace = serialize($logItem->m_debugBacktrace);
             $calledFrom     = $logItem->m_calledFrom;
             $microTime      = $logItem->m_microTime;
+            $superGlobals   = $logItem->m_superGlobals;
 
         $stmt->bind_param
         (
-            'sssss',
+            'ssssss',
             $message,
             $object,
             $debugBacktrace,
             $calledFrom,
-            $microTime
+            $microTime,
+            $superGlobals
         );
 
         $stmt->execute();
@@ -83,12 +85,12 @@ class LogItemDAL
     {
         $this->logCollection = new \model\LogCollection();
 
-        $stmt = $this->database->prepare("SELECT `message`, `object`, `debugBacktrace`, `calledFrom`, `microTime` FROM " . self::$table);
+        $stmt = $this->database->prepare("SELECT `message`, `object`, `debugBacktrace`, `calledFrom`, `microTime`, `superGlobals` FROM " . self::$table);
         $this->TestSTMT($stmt);
 
         $stmt->execute();
 
-        $stmt->bind_result($message, $object, $debugBacktrace, $calledFrom, $microTime);
+        $stmt->bind_result($message, $object, $debugBacktrace, $calledFrom, $microTime, $superGlobals);
 
         while($stmt->fetch())
         {
@@ -100,7 +102,8 @@ class LogItemDAL
                                                 $object,
                                                 $message,
                                                 $microTime,
-                                                $debugBacktrace
+                                                $debugBacktrace,
+                                                $superGlobals
                                             );
         }
         return $this->logCollection;
