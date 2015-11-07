@@ -74,6 +74,21 @@ class LogManager
             $this->view =  new \view\LogView($logCollection, $this->nav, true);
         }
 
+        if($this->nav->DoShowAllIpAddresseThatExistsInSavedLogCollection())
+        {
+            $this->view = new \view\LogIpListSelectable($this->logCollection, $this->nav);
+        }
+
+        if($this->nav->DoShowAllSessionsThatExistsInSavedLogCollection())
+        {
+            $this->view = new \view\LogSessionListSelectable($this->logCollection, $this->nav);
+        }
+
+        if($this->nav->ClentWantsToDigDeeper())
+        {
+            $logCollection = $this->nav->GetLogItemsBySession($this->logCollection);
+            $this->view = new \view\LogView($logCollection, $this->nav);
+        }
 
         try
         {
@@ -90,12 +105,16 @@ class LogManager
                                                         $e,
                                                         microtime(true),
                                                         $e->getTrace(),
-                                                        $this->GetStateOfRequest()
+                                                        $this->GetStateOfRequest(),
+                                                        $_SERVER['REMOTE_ADDR'],
+                                                        session_id()
                                                     )
                                                 );
 
             $this->logCollection = $this->logItemDal->ReadLogItemAll();
-            return $logView = new \view\LogView($this->logCollection, $this->nav);
+            $tmpLogCollection = new \model\LogCollection();
+            $tmpLogCollection->addExistingLogItem($this->logCollection->getLastSaved());
+            return $logView = new \view\LogView($tmpLogCollection, $this->nav);
         }
         return $this->view;
     }

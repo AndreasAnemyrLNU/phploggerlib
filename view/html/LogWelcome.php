@@ -22,7 +22,12 @@ class LogWelcomeView
     public function getHTML()
     {
 
-        $ret = "Welcome to phpLoggerLig Beta 0.1";
+        $ret =
+        "
+            <h4 class=\"h4\">Welcome to phpLoggerLib (Beta 0.1)</h4>
+            <p>Start test trace by going to the interace that simulates how exceptions can be saved into a database</p>
+        "
+        ;
 
 
         return $ret;

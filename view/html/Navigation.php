@@ -138,6 +138,31 @@ class Navigation
         return false;
     }
 
+    public function DoShowAllIpAddresseThatExistsInSavedLogCollection()
+    {
+        //TODO fix string dependencies later.....
+        if($this->action === 'iplist')
+            return true;
+    }
+
+    public function DoShowAllSessionsThatExistsInSavedLogCollection()
+    {
+        //TODO fix string dependencies later.....
+        if($this->action === 'sessionlist')
+            return true;
+    }
+
+    public function GetLogItemsBySession(\model\LogCollection $logCollection)
+    {
+        return  $logCollection->GetLogItemsBySess($_GET['sess']);
+    }
+
+    public function ClentWantsToDigDeeper()
+    {
+        if($this->action == 'digdeeper')
+            return true;
+    }
+
     private function getDo()
     {
         return $this->do;
@@ -147,5 +172,4 @@ class Navigation
     {
         return $this->do;
     }
-
 }

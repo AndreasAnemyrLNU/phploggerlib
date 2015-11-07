@@ -43,7 +43,9 @@ class LogItem {
 									$logThisObject = null,
 									$microTime = null,
 									$debug_backtrace = null,
-									$superGlobals = null
+									$superGlobals = null,
+									$ip,
+									$sess
 								)
 	{
 
@@ -83,8 +85,8 @@ class LogItem {
 		}
 
 		//TODO Check if these are ok to be in a class of type model. Don´t know for now....
-		$this->m_ip = $_SERVER['REMOTE_ADDR'];
-		$this->m_sess = session_id();
+		$this->m_ip = $ip;
+		$this->m_sess = $sess;
 	}
 	
 	/**
@@ -101,5 +103,15 @@ class LogItem {
 
 		return substr($path, $fullLength - $partLength);
 	}
-	 
+
+	public function HasEqualsSess(LogItem $logItem)
+	{
+		if($this->m_sess == $logItem->m_sess)
+		{
+			return true;
+		}
+
+		return false;
+	}
+
 }

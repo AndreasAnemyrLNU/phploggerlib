@@ -20,6 +20,8 @@ require_once("model/LogItemDAL.php");
 require_once("view/html/HTMLPage.php");
 require_once("view/html/LogWelcome.php");
 require_once("view/html/LogInterfaceView.php");
+require_once("view/html/LogSessionListSelectable.php");
+require_once("view\html\LogIpListSelectable.php");
 require_once("controller/LogManager.php");
 require_once("view/html/Navigation.php");
 

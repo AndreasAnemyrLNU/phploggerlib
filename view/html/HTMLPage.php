@@ -44,13 +44,13 @@ class HTMLPage
                         <span class=\"icon-bar\"></span>
                         <span class=\"icon-bar\"></span>
                       </button>
-                      <a class=\"navbar-brand\" href=\"#\">phpLoggerLib beta 0.1</a>
+                      <a class=\"navbar-brand\" href=\"?#\"><h5 class=\"h5\">phpLoggerLib</h5></a>
                     </div>
                     <!-- Collect the nav links, forms, and other content for toggling -->
                     <div class=\"collapse navbar-collapse\" id=\"bs-example-navbar-collapse-1\">
                       <ul class=\"nav navbar-nav\">
                         <li>{$this->nav->RenderGenericDoButtonWithAction('Interface', 'logmanager', 'interface', 'primary')}</li>
-                        <li>{$this->nav->RenderGenericDoButtonWithAction('Analyze', 'logmanager', 'analyze', 'primary')}</li>
+                        <li>{$this->nav->RenderGenericDoButtonWithAction('IP List', 'logmanager', 'iplist', 'primary')}</li>
                       </ul>
                     </div><!-- /.navbar-collapse -->
                   </div><!-- /.container-fluid -->
